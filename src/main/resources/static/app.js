@@ -11,6 +11,10 @@ function setConnected(connected) {
         $("#conversation").show();
         $("#alertas").show();
 		$("#connect").removeClass( "btn-light" ).addClass( "btn-success" );
+		
+		$("#email").removeAttr('disabled');
+		$("#send").removeAttr('disabled');
+
     }
     else {
         $("#conversation").hide();
@@ -34,10 +38,7 @@ function connect() {
 			sendName();	
 				
 		} else {		
-            showGreeting(JSON.parse(greeting.body));
-			$("#email").removeAttr('disabled');
-			$("#send").removeAttr('disabled');
-			
+            showGreeting(JSON.parse(greeting.body));			
 		}	
         });
     });
@@ -50,6 +51,9 @@ function disconnect() {
 		sessionStorage.clear();		
 		//limpiar datos mostrados
 		limpiarDatos();
+		
+		$("#email").attr('disabled','disabled');
+		$("#send").attr('disabled','disabled');
     }
     setConnected(false);
 }
