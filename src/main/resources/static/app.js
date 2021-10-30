@@ -65,6 +65,11 @@ function sendName() {
     stompClient.send("/app/atencion", {}, JSON.stringify({'email': $("#email").val()}));
 }
 
+function validaEmail(email) {
+	var regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+	return regex.test(email) ? true : false;
+}
+
 
 function showGreeting(message) {
 	if (message.emailRecibido == $("#email").val()) {		
