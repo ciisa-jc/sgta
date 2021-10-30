@@ -31,9 +31,13 @@ function connect() {
         stompClient.subscribe('/topic/greetings', function (greeting) {		
 		// test send meesage to server	
 		if (greeting.body == 'email_vacio') {			
-			sendName();			
+			sendName();	
+				
 		} else {		
             showGreeting(JSON.parse(greeting.body));
+			$("#email").removeAttr('disabled');
+			$("#send").removeAttr('disabled');
+			
 		}	
         });
     });
@@ -97,6 +101,11 @@ $(function () {
     $( "#send" ).click(function() { sendName(); });
     $("#conversation").hide();
     $("#alertas").hide();
+	
+	$("#email").attr('disabled','disabled');
+	$("#send").attr('disabled','disabled');
+
+
 });
 
 function limpiarDatos() {
