@@ -38,7 +38,10 @@ function connect() {
 			sendName();	
 				
 		} else {		
-            showGreeting(JSON.parse(greeting.body));			
+            showGreeting(JSON.parse(greeting.body));
+			// manejar desconectar boton enviar y input email	
+			$("#email").removeAttr('disabled');
+			$("#send").removeAttr('disabled');		
 		}	
         });
     });
