@@ -40,8 +40,8 @@ function connect() {
 		} else {		
             showGreeting(JSON.parse(greeting.body));
 			// manejar desconectar boton enviar y input email	
-			$("#email").removeAttr('disabled');
-			$("#send").removeAttr('disabled');		
+			$("#email").attr('disabled','disabled');
+			$("#send").attr('disabled','disabled');	
 		}	
         });
     });
@@ -64,6 +64,7 @@ function disconnect() {
 function sendName() {
     stompClient.send("/app/atencion", {}, JSON.stringify({'email': $("#email").val()}));
 }
+
 
 function showGreeting(message) {
 	if (message.emailRecibido == $("#email").val()) {		
