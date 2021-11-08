@@ -4,6 +4,7 @@ var swicht = 0;
 var alertas = [];
 var anio = (new Date).getFullYear();
 
+
 function setConnected(connected) {
 	$("#connect").prop("disabled", connected);
 	$("#disconnect").prop("disabled", !connected);
@@ -90,7 +91,7 @@ function validaEmail(email) {
 
 
 function showGreeting(message) {
-	$("#alertas").hide();
+	
 	
 	if (message.emailRecibido == $("#email").val()) {
 		// Muestra si pudo recuperar un turno
@@ -138,6 +139,8 @@ function showGreeting(message) {
 }
 
 $(function() {
+	$("#alertas").hide();
+	
 	$("form").on('submit', function(e) {
 		e.preventDefault();
 	});
