@@ -90,6 +90,8 @@ function validaEmail(email) {
 
 
 function showGreeting(message) {
+	$("#alertas").hide();
+	
 	if (message.emailRecibido == $("#email").val()) {
 		// Muestra si pudo recuperar un turno
 		if (message.atencion != null) {
@@ -106,6 +108,8 @@ function showGreeting(message) {
 				} else if (sessionStorage.getItem('seg') > minutesToSeconds(message.tiempoEstimadoParaAtencion)) {
 					sessionStorage.setItem('seg', minutesToSeconds(message.tiempoEstimadoParaAtencion));
 				}
+				
+				$("#alertas").show();
 				//Alertas
 				alertas = message.alertas;
 				//Activar conteo regresivo		
