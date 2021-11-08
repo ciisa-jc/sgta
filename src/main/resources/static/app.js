@@ -13,7 +13,6 @@ function setConnected(connected) {
 	if (connected) {
 		$("#footer").html(anio + " Copyright: ")
 		$("#conversation").show();
-		$("#alertas").show();
 		$("#connect").removeClass("btn-light").addClass("btn-success");
 		disableInput(0);
 
