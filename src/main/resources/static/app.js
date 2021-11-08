@@ -91,7 +91,6 @@ function validaEmail(email) {
 
 function showGreeting(message) {
 	
-	
 	if (message.emailRecibido == $("#email").val()) {
 		// Muestra si pudo recuperar un turno
 		if (message.atencion != null) {
@@ -124,16 +123,6 @@ function showGreeting(message) {
 		} else {
 			$("#turno").text('Su correo no registra un turno, pendiente de atenci\u00F3n.');
 		}
-	}
-	else {
-		Swal.fire({
-			icon: 'error',
-			title: 'Lo sentimos',
-			text: 'Tenemos un problema con su turno',
-			footer: 'Favor acerquese a recepción'
-		});
-		disableInput(0);
-		swicht = 1;
 	}
 }
 
