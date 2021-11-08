@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hello Client SGTA</title>
 <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="/main.css" rel="stylesheet">
@@ -18,9 +20,9 @@
 <body>
 	<noscript>
 		<h4 style="color: #ff0000">
-			Parece que su navegador no es compatible con ¡Javascript!<br>
-			Websocket se basa en la habilitación de Javascript.<br> Por
-			favor habilite Javascript y vuelva a cargar esta página!
+			Parece que su navegador no es compatible con Â¡Javascript!<br>
+			Websocket se basa en la habilitaciÃ³n de Javascript.<br> Por
+			favor habilite Javascript y vuelva a cargar esta pÃ¡gina!
 		</h4>
 	</noscript>
 	<div id="main-content" class="container">
@@ -34,7 +36,7 @@
 							disabled="disabled">Desconectar</button>
 					</div>
 					<div class="form-group">
-						<label for="email">Email</label> <input type="email" id="email"
+						<label for="email">Email</label> <input id="email"
 							class="form-control" placeholder="ej: maria@ejemplo.com">
 					</div>
 					<div class="form-group">
@@ -70,8 +72,8 @@
 					<span id="tiempoEstimadoParaAtencion"></span>
 				</p>
 			</div>
-			<div class="card-footer text-muted">
-				© 2021 Copyright: <a class="text-reset fw-bold">CIISA</a>
+			<div  class="card-footer text-muted">
+				Â© <a id = "footer"> </a><a class="text-reset fw-bold">CIISA</a>
 			</div>
 		</div>
 
