@@ -30,6 +30,7 @@ function setConnected(connected) {
 function connect() {
 
 	var socket = new SockJS('https://sgtasec.herokuapp.com/stomp-endpoint');
+//	var socket = new SockJS('http://localhost:8080/stomp-endpoint');
 	stompClient = Stomp.over(socket);
 	stompClient.connect({}, function(frame) {
 		setConnected(true);
@@ -64,15 +65,17 @@ function disconnect() {
 }
 
 function sendName() {
-	if ($("#email").val() == "") {
+	let mailCliente = $("#email").val().trim();
+	
+	if (mailCliente == "") {
 		Swal.fire({
 			icon: 'error',
 			text: 'El campo Mail es obligatorio!',
 			footer: 'Verifique el ingreso del Mail registrado'
 		});
 	} else {
-		if (validaEmail($("#email").val())) {
-			stompClient.send("/app/atencion", {}, JSON.stringify({ 'email': $("#email").val() }));
+		if (validaEmail(mailCliente)) {
+			stompClient.send("/app/atencion", {}, JSON.stringify({ 'email': mailCliente }));
 			swicht = 0;
 		} else {
 			Swal.fire({
@@ -90,13 +93,20 @@ function validaEmail(email) {
 
 
 function showGreeting(message) {
-	
-	if (message.emailRecibido == $("#email").val()) {
+	let mailCliente = $("#email").val().trim();
+
+	if (message.emailRecibido == mailCliente) {
 		// Muestra si pudo recuperar un turno
 		if (message.atencion != null) {
 			$("#turno").text('Turno ' + message.atencion.turno.turnoAtencion);
 			let contLlamados = message.atencion.contadorLlamados;
-			$("#contadorLlamados").text('Usted ha sido llamado(a) ' + ((contLlamados > 0) && (contLlamados < 2)) ? contLlamados + " Vez" : contLlamados + " Veces");
+			
+			if(contLlamados >= 1) {				
+				let llamados = 'Su turno ha sido llamado(a) ';
+				llamados +=  (contLlamados == 1) ? (contLlamados + " Vez") : contLlamados + " Veces";
+				$("#contadorLlamados").text(llamados);
+			}
+			
 			clearInterval(interval);
 
 			if (message.tiempoEstimadoParaAtencion != null) {
@@ -154,9 +164,9 @@ function limpiarDatos() {
 function descontarSegundos() {
 	var seconds = sessionStorage.getItem('seg');
 	sessionStorage.setItem('seg', seconds - 1);
-	$("#tiempoEstimadoParaAtencion").text('Su tiempo estimado de espera es de ' + secondsToHourAndMinutes(sessionStorage.getItem('seg')));
+	//$("#tiempoEstimadoParaAtencion").text('Su tiempo estimado de espera es de ' + secondsToHourAndMinutes(sessionStorage.getItem('seg')));
 	//sección superior, conteo regresivo
-	$("#conteoRegresivo").text(secondsToHourAndMinutes(sessionStorage.getItem('seg')));
+	$("#conteoRegresivo").text('Tiempo de espera estimado: ' + secondsToHourAndMinutes(sessionStorage.getItem('seg')));
 	//Buscar alertas
 	manejoAlertas();
 
