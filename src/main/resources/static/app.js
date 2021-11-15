@@ -29,8 +29,8 @@ function setConnected(connected) {
 
 function connect() {
 
-	var socket = new SockJS('https://sgtasec.herokuapp.com/stomp-endpoint');
-//	var socket = new SockJS('http://localhost:8080/stomp-endpoint');
+//	var socket = new SockJS('https://sgtasec.herokuapp.com/stomp-endpoint');
+	var socket = new SockJS('http://localhost:8080/stomp-endpoint');
 	stompClient = Stomp.over(socket);
 	stompClient.connect({}, function(frame) {
 		setConnected(true);
@@ -40,16 +40,43 @@ function connect() {
 				sendName();
 
 			} else {
-				showGreeting(JSON.parse(greeting.body));
-				// manejar desconectar boton enviar y input email
-				if (swicht == 0) {
-					disableInput(1);
-				}
+				
+				let objJson = JSON.parse(greeting.body);
+	
+				if (objJson.atencion != null) {					
+					if (objJson.atencion.turno.estado === 1) {
+						showGreeting(objJson);
+						// manejar desconectar boton enviar y input email
+						if (swicht == 0) {
+							disableInput(1);
+						}					
+					}
+					
+					if (objJson.atencion.turno.estado === 2) {
+						turnoEnAtencion();
+					}
 
+					if (objJson.atencion.turno.estado === 3) {
+						limpiarDatos();
+						turnoConAtencionFinalizada(objJson);						
+					}
+				} else {
+					limpiarDatos();
+					$("#turno").text('Su correo no registra un turno, pendiente de atenci\u00F3n.');
+				}
 			}
 		});
 	});
+}
 
+function turnoEnAtencion() {
+	sessionStorage.setItem('seg', 0);
+	$("#alertas").hide();
+	$("#contadorLlamados").text('El turno está en atención');
+}
+
+function turnoConAtencionFinalizada(msg) {
+	$("#contadorLlamados").text('A finalizado la atención del turno ' + msg.atencion.turno.turnoAtencion + ' para ' + msg.emailRecibido );
 }
 
 function disconnect() {
@@ -129,16 +156,13 @@ function showGreeting(message) {
 				$("#tiempoEstimadoParaAtencion").css("background-color", "yellow");
 				$("#tiempoEstimadoParaAtencion").text('Su tiempo de espera ha finalizado.');
 			}
-
-		} else {
-			$("#turno").text('Su correo no registra un turno, pendiente de atenci\u00F3n.');
 		}
 	}
 }
 
 $(function() {
 	$("#alertas").hide();
-	
+		
 	$("form").on('submit', function(e) {
 		e.preventDefault();
 	});
@@ -148,6 +172,7 @@ $(function() {
 	$("#conversation").hide();
 	$("#alertas").hide();
 	disableInput(1);
+
 });
 
 function limpiarDatos() {
@@ -158,7 +183,6 @@ function limpiarDatos() {
 	$("#seccion-alerta").css("background-color", "#fff");
 	$("#alerta").text('');
 	$("#contadorLlamados").text('');
-
 }
 
 function descontarSegundos() {
@@ -239,9 +263,7 @@ function minutesToSeconds(minutes) {
 	return segundos;
 }
 
-
 //funciones Jaime Alarcon
-
 function disableInput(swich) {
 	if (swich == 1) {
 		$("#email").attr('disabled', 'disabled');
