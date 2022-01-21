@@ -30,7 +30,7 @@ function setConnected(connected) {
 function connect() {
 
 	var socket = new SockJS('https://sgtasec.herokuapp.com/stomp-endpoint');
-//	var socket = new SockJS('http://localhost:8080/stomp-endpoint');
+
 	stompClient = Stomp.over(socket);
 	stompClient.connect({}, function(frame) {
 		setConnected(true);
@@ -80,16 +80,32 @@ function turnoConAtencionFinalizada(msg) {
 }
 
 function disconnect() {
-	if (stompClient !== null) {
-		stompClient.disconnect();
-		clearInterval(interval);
-		sessionStorage.clear();
-		//limpiar datos mostrados
-		limpiarDatos();
-		disableInput(1);
-	}
-	setConnected(false);
+	
+	 Swal.fire({
+	  title: '¡Atención!',
+	  text: "Al desconectarse, el conteo regresivo que muestra el tiempo estimado para su atención, será reiniciado.",
+	  icon: 'warning',
+	  showCancelButton: true,
+	  confirmButtonColor: '#3085d6',
+	  cancelButtonColor: '#d33',
+	  confirmButtonText: 'Si, desconectar!'
+	}).then((result) => {
+	  if (result.isConfirmed) {
+		
+	    		if (stompClient !== null) {
+				stompClient.disconnect();
+				clearInterval(interval);
+				sessionStorage.clear();
+				//limpiar datos mostrados
+				limpiarDatos();
+				disableInput(1);
+			}
+			setConnected(false);
+	  } 
+	})
+
 }
+
 
 function sendName() {
 	let mailCliente = $("#email").val().trim();
@@ -188,7 +204,6 @@ function limpiarDatos() {
 function descontarSegundos() {
 	var seconds = sessionStorage.getItem('seg');
 	sessionStorage.setItem('seg', seconds - 1);
-	//$("#tiempoEstimadoParaAtencion").text('Su tiempo estimado de espera es de ' + secondsToHourAndMinutes(sessionStorage.getItem('seg')));
 	//sección superior, conteo regresivo
 	$("#conteoRegresivo").text('Tiempo de espera estimado: ' + secondsToHourAndMinutes(sessionStorage.getItem('seg')));
 	//Buscar alertas
@@ -202,7 +217,7 @@ function descontarSegundos() {
 
 function manejoAlertas() {
 	let alerta = [];
-	// Manejo de Alertas, duracionDesde y duracionHasta expresados en minutos
+	// Manejo de Alertas, duracion Desde y duracionHasta expresados en minutos
 	alerta = alertas.filter(function(el) {
 		return ((Math.floor(sessionStorage.getItem('seg') / 60) >= el.duracionDesde) && (Math.floor(sessionStorage.getItem('seg') / 60) <= el.duracionHasta));
 	});
